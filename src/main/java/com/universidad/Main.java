@@ -100,6 +100,7 @@ public class Main {
                         break;
                     case 4:
                         System.out.println("Generar reporte");
+                        materia1.mostrarmaterias();
                         materia1.mostrarInfo();
                         break;
                     case 5:
