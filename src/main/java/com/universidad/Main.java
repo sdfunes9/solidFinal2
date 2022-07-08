@@ -1,4 +1,8 @@
 package com.universidad;
+import com.universidad.utils.email.EmailService;
+import com.universidad.utils.email.interfaces.EmailSender;
+import com.universidad.utils.email.library.SimpleEmailSender;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -17,6 +21,8 @@ public class Main {
         Materia materia1 = new Materia();
         Notas notas1 = new Notas();
         PagoCuota pago1 = new PagoCuota();
+
+
 
         while(!salir){
 
@@ -113,7 +119,7 @@ public class Main {
                         break;
                     case 7:
                         System.out.println("Enviar e-mail");
-                        //Implementar metodo
+                        EmailSender emailSender = SimpleEmailSender.getDefaultInstance();
                         break;
                     case 8:
                         System.out.println("Saliendo del sistema");
