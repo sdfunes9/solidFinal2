@@ -31,7 +31,7 @@ public class Main {
             System.out.println("7. Salir");
             try{
                 opcion1 = Integer.parseInt(entrada.next());
-                if (opcion1<1 || opcion1>8){
+                if (opcion1<1 || opcion1>7){
                     System.out.println("Opcion invalida");
                 }
                 switch (opcion1){
@@ -115,7 +115,7 @@ public class Main {
                         salir = true;
                         break;
                     default:
-                        System.out.println("Solo numeros entre 1 y 8");
+                        System.out.println("Solo numeros entre 1 y 7");
                 }
             }catch (InputMismatchException e){
                 System.out.println("Debe ingresar un numero");
