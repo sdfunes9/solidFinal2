@@ -5,12 +5,21 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
+import com.universidad.utils.email.Email;
+import com.universidad.utils.email.EmailService;
+import com.universidad.utils.email.interfaces.EmailSender;
+import com.universidad.utils.email.library.SimpleEmailSender;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.FileNotFoundException;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Materia {
@@ -168,6 +177,71 @@ public class Materia {
             documento.close();
 
             System.out.println("Documento PDF creado");
+        }
+
+        public void guardarEnviar() {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Desea enviar por correo o guardar en su computadora? (Ingrese 'enviar' o 'guardar')");
+            System.out.print("> ");
+            String respuesta = scanner.nextLine();
+
+            if (respuesta.compareTo("enviar") == 0) {
+                // #######################################################################################################
+                // Creamos el pdf
+                // #######################################################################################################
+                String tempDir = System.getProperty("java.io.tmpdir");
+                Path tempPath = Paths.get(tempDir + "ProyectoSOLID\\PDFsGenerados\\");
+                if (!Files.exists(tempPath)) {
+                    try {
+                        Files.createDirectories(tempPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                dest = tempPath + "\\" + "Reporte-" + Math.abs(new Random().nextInt()) + ".pdf";
+                try {
+                    creacionpdf();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+
+                String fileLocation = dest;
+                enviarPorCorreo(fileLocation);
+
+            } else if (respuesta.compareTo("guardar") == 0) {
+                try {
+                    mostrarInfo();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        public void enviarPorCorreo(String fileLocation) {
+            // #######################################################################################################
+            // Preparamos el correo
+            // #######################################################################################################
+            Scanner scanner = new Scanner(System.in);
+            Email email = new Email();
+
+            System.out.println("Ingrese su direccion de correo.");
+            System.out.print("> ");
+            String destinatario = scanner.nextLine();
+            email.addRecipient(destinatario);
+
+            email.setSubject("Reporte de Datos de Materia");
+            email.setMessage("No responda a este mensaje. \n\n\n" +
+                    "Reporte generado para materia: " + BdMaterias.listarMaterias().get(nmateria).nombreMateria);
+            email.addAttachment(new File(fileLocation));
+
+            // #######################################################################################################
+            // En esta seccion se realiza el envio
+            // #######################################################################################################
+            EmailSender emailSender = SimpleEmailSender.getDefaultInstance();
+            EmailService emailService = new EmailService(emailSender);
+            emailService.sendEmail(email);
         }
     }
 

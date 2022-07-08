@@ -28,8 +28,7 @@ public class Main {
             System.out.println("4. Generar reporte por materia");
             System.out.println("5. Registrar alumnos por materia y notas");
             System.out.println("6. Listar alumnos por materia y notas");
-            System.out.println("7. Enviar e-mail");
-            System.out.println("8. Salir");
+            System.out.println("7. Salir");
             try{
                 opcion1 = Integer.parseInt(entrada.next());
                 if (opcion1<1 || opcion1>8){
@@ -101,7 +100,7 @@ public class Main {
                     case 4:
                         System.out.println("Generar reporte");
                         materia1.mostrarmaterias();
-                        materia1.mostrarInfo();
+                        materia1.guardarEnviar();
                         break;
                     case 5:
                         System.out.println("Registrar notas de alumno");
@@ -112,10 +111,6 @@ public class Main {
                         notas1.listarNotasAlumnos();
                         break;
                     case 7:
-                        System.out.println("Enviar e-mail");
-                        //Implementar metodo
-                        break;
-                    case 8:
                         System.out.println("Saliendo del sistema");
                         salir = true;
                         break;
@@ -125,9 +120,7 @@ public class Main {
             }catch (InputMismatchException e){
                 System.out.println("Debe ingresar un numero");
                 entrada.next();
-              } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+              }
         }
         }
     }
